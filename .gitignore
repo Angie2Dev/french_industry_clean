@@ -1,0 +1,24 @@
+# Ignore OS/system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python cache and virtual environment folders
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+venv/
+
+# Jupyter and Streamlit cache
+.ipynb_checkpoints/
+.streamlit/cache/
+.streamlit/config.toml
+
+# Ignore data files downloaded at runtime (via gdown)
+population.csv
+name_geographic_information.csv
+
+# Logs or debug files (optional)
+*.log
