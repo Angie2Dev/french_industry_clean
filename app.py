@@ -5,7 +5,7 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import geopandas as gpd
+# import geopandas as gpd
 import matplotlib.patches as mpatches # Still needed for other potential legend elements, but not for this specific change
 import plotly.graph_objects as go
 import plotly.express as px
@@ -16,115 +16,115 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from scipy.stats import spearmanr
 from scipy.stats import pearsonr
-import gdown
+#import gdown
 
 st.set_page_config(layout="wide")
 
 @st.cache_data
 def load_all_static_data():
-    eu_lo_gap = pd.read_csv('eurogap.csv')
-    eu_lo_gap2014 = pd.read_csv('eurogap14.csv')
-    co = pd.read_csv('base_etablissement_par_tranche_effectif.csv')
-    sa = pd.read_csv('sa_cleaned.csv')
-    seco = pd.read_csv('companies_by_sector.csv')
-    co_sa_lo_po_no_city = pd.read_csv('merge_one_to_four.csv')
-    agekpi = pd.read_csv('AGEKPI.csv')
-    busikpi = pd.read_csv('BUSIPKPI.csv')
-    sakpi = pd.read_csv('SALARIESKPI.csv')
-    new_po_lo_co_sa_unique = pd.read_csv('new_po_lo_co_sa_unique.csv')
-    seco_gap = pd.read_csv('seco_gap.csv')
-    G = pd.read_csv('G.csv')
+    eu_lo_gap = pd.read_csv('datasets/eurogap.csv')
+    eu_lo_gap2014 = pd.read_csv('datasets/eurogap14.csv')
+    co = pd.read_csv('datasets/base_etablissement_par_tranche_effectif.csv')
+    sa = pd.read_csv('datasets/sa_cleaned.csv')
+    seco = pd.read_csv('datasets/companies_by_sector.csv')
+    co_sa_lo_po_no_city = pd.read_csv('datasets/merge_one_to_four.csv')
+    agekpi = pd.read_csv('datasets/AGEKPI.csv')
+    busikpi = pd.read_csv('datasets/BUSIPKPI.csv')
+    sakpi = pd.read_csv('datasets/SALARIESKPI.csv')
+    new_po_lo_co_sa_unique = pd.read_csv('datasets/new_po_lo_co_sa_unique.csv')
+    seco_gap = pd.read_csv('datasets/seco_gap.csv')
+    G = pd.read_csv('datasets/G.csv')
     return eu_lo_gap, eu_lo_gap2014, co, sa, seco, co_sa_lo_po_no_city, agekpi, busikpi, sakpi, new_po_lo_co_sa_unique, G, seco_gap 
 eu_lo_gap, eu_lo_gap2014, co, sa, seco, co_sa_lo_po_no_city, agekpi, busikpi, sakpi, new_po_lo_co_sa_unique, G, seco_gap  = load_all_static_data()
-@st.cache_data
-def load_data():
+#@st.cache_data
+#def load_data():
     # First file (population data)
-    file1_id = '1rYzQQliM1sBhmupFg6Gu53VeAvg9HKoh'
-    url1 = f'https://drive.google.com/uc?id={file1_id}'
-    output1 = 'population.csv'
-    if not os.path.exists(output1):
-        gdown.download(url1, output1, quiet=False)
-    po = pd.read_csv(output1)
+    #file1_id = '..........'
+    #url1 = f'https://drive.google.com/uc?id={file1_id}'
+    #output1 = 'population.csv'
+    #if not os.path.exists(output1):
+        #gdown.download(url1, output1, quiet=False)
+    #po = pd.read_csv(output1)
 
         # Second file (geographic information)
-    file2_id = '1XOSn4XYrDIvB0Z9FAZGqvvgoGeUNpusp'
-    url2 = f'https://drive.google.com/uc?id={file2_id}'
-    output2 = 'name_geographic_information.csv'
+    #file2_id = '.....'
+    #url2 = f'https://drive.google.com/uc?id={file2_id}'
+    #output2 = 'name_geographic_information.csv'
 
-    if not os.path.exists(output2):
-        gdown.download(url2, output2, quiet=False)
-    lo = pd.read_csv(output2)
+    #if not os.path.exists(output2):
+        #gdown.download(url2, output2, quiet=False)
+    #lo = pd.read_csv(output2)
 
 
 #---Data Cleaning---
     # --- Population File Data Cleaning and Renaming ---
-    po = po.drop('NIVGEO', axis=1) # Drop the 'NIVGEO' column
+    #po = po.drop('NIVGEO', axis=1) # Drop the 'NIVGEO' column
 
     # Rename columns for 'lo' DataFrame
-    lo = lo.rename(columns={
-        "code_insee": "city_id",
-        "nom_commune": "city_name",
-        "code_région": "region_no",
-        "nom_région": "region_name",
-        "numéro_département": "dep_no",
-        "nom_département": "dep_name",
-        "préfecture": "prefecture",
-        "EU_circo": "eu_election_circle_fr",
-        "chef.lieu_région": "region_capital",
-        "numéro_circonscription": "electoral_district_no",
-        "codes_postaux": "postal_code",
-        "latitude": "latitude",
-        "longitude": "longitude",
-        "éloignement": "distance_index"
-    })
+    #lo = lo.rename(columns={
+        #"code_insee": "city_id",
+        #"nom_commune": "city_name",
+        #"code_région": "region_no",
+        #"nom_région": "region_name",
+        #"numéro_département": "dep_no",
+        #"nom_département": "dep_name",
+        #"préfecture": "prefecture",
+        #"EU_circo": "eu_election_circle_fr",
+        #"chef.lieu_région": "region_capital",
+        #"numéro_circonscription": "electoral_district_no",
+        #"codes_postaux": "postal_code",
+        #"latitude": "latitude",
+        #"longitude": "longitude",
+        #"éloignement": "distance_index"
+    #})
 
     # Convert columns to appropriate types for 'lo'
-    lo['dep_no'] = pd.to_numeric(lo['dep_no'], errors='coerce').astype('Int64')
-    lo['postal_code'] = pd.to_numeric(lo['postal_code'], errors='coerce').astype('Int64')
-    lo['longitude'] = pd.to_numeric(lo['longitude'], errors='coerce')
-    lo['latitude'] = pd.to_numeric(lo['latitude'], errors='coerce')
+    #lo['dep_no'] = pd.to_numeric(lo['dep_no'], errors='coerce').astype('Int64')
+    #lo['postal_code'] = pd.to_numeric(lo['postal_code'], errors='coerce').astype('Int64')
+    #lo['longitude'] = pd.to_numeric(lo['longitude'], errors='coerce')
+    #lo['latitude'] = pd.to_numeric(lo['latitude'], errors='coerce')
 
     # Rename columns for 'po' DataFrame
-    po = po.rename(columns={
-        "CODGEO": "city_id",
-        "LIBGEO": "city_name",
-        "REG": "region_no",
-        "DEP": "dep_no",
-        "MOCO": "cohab_mode",
-        "AGEQ80_17": "age_group",
-        "SEXE": "sex",
-        "NB": "people_no"
-    })
+    #po = po.rename(columns={
+        #"CODGEO": "city_id",
+        #"LIBGEO": "city_name",
+        #"REG": "region_no",
+        #"DEP": "dep_no",
+        #"MOCO": "cohab_mode",
+        #"AGEQ80_17": "age_group",
+        #"SEXE": "sex",
+        #"NB": "people_no"
+    #})
 
     # Replace numeric codes in 'cohab_mode'
-    cohab_explanation = {
-        11: "child_2_parents",
-        12: "child_1_parent",
-        21: "adult_couple_no_kids",
-        22: "adult_couple_kids",
-        23: "adult_alone_kids",
-        31: "nonfamily_household",
-        32: "living_alone"
-    }
-    po["cohab_mode"] = po["cohab_mode"].replace(cohab_explanation)
+    #cohab_explanation = {
+        #11: "child_2_parents",
+        #12: "child_1_parent",
+        #21: "adult_couple_no_kids",
+        #22: "adult_couple_kids",
+        #23: "adult_alone_kids",
+        #31: "nonfamily_household",
+        #32: "living_alone"
+    #}
+    #po["cohab_mode"] = po["cohab_mode"].replace(cohab_explanation)
 
     # Change 'age_group' column type and replace numbers with ranges
-    po["age_group"] = po["age_group"].astype(object)
-    po["age_group"] = po["age_group"].replace({
-        0: "0-4", 5: "5-9", 10: "10-14", 15: "15-19", 20: "20-24",
-        25: "25-29", 30: "30-34", 35: "35-39", 40: "40-44", 45: "45-49",
-        50: "50-54", 55: "55-59", 60: "60-64", 65: "65-69", 70: "70-74",
-        75: "75-79", 80: "80-84"
-    })
+    #po["age_group"] = po["age_group"].astype(object)
+    #po["age_group"] = po["age_group"].replace({
+        #0: "0-4", 5: "5-9", 10: "10-14", 15: "15-19", 20: "20-24",
+        #25: "25-29", 30: "30-34", 35: "35-39", 40: "40-44", 45: "45-49",
+        #50: "50-54", 55: "55-59", 60: "60-64", 65: "65-69", 70: "70-74",
+        #75: "75-79", 80: "80-84"
+    #})
     # Replace 1 for men and 2 for women in 'sex'
-    po["sex"] = po["sex"].replace({1: "men", 2: "women"})
+    #po["sex"] = po["sex"].replace({1: "men", 2: "women"})
 
-    return po, lo
+    #return po, lo
 
 # Load data only once
-po, lo = load_data()
-st.session_state['po'] = po
-st.session_state['lo'] = lo
+#po, lo = load_data()
+#st.session_state['po'] = po
+#st.session_state['lo'] = lo'''
 
 
 #Cleaning co
@@ -178,7 +178,7 @@ st.sidebar.write("""- Angelika Tabak\n- Mir Geiassudin Seifie\n- Natalia Syryche
 
 if page == "Introduction & Objectives":
     st.title("« Bonjour! »")
-    st.image("french_bar_charts.gif")
+    st.image("pictures/french_bar_charts.gif")
     st.markdown("""
     Contemporary labor markets are being shaped by ongoing demographic changes, shortages of skilled workers, and the resulting 
     long-term challenges for pension systems. In this context, it is increasingly important to analyze both structural and socio-economic 
@@ -203,7 +203,7 @@ if page == "Introduction & Objectives":
     « Liberté, Égalité, Sororité, Fraternité » - Liberty, Equality, Sisterhood, Brotherhood.            
                 
     """)
-    st.image("FrenchMotto.png")
+    st.image("pictures/FrenchMotto.png")
     st.markdown("""
     After a quick overview of our data setup, and cleaning steps, we dive into the visual and statistical chapters—the ones illustrated in the graphic above.
 
@@ -247,9 +247,10 @@ elif page == "Datasets & Cleaning":
                 
     st.markdown("""
     **Key adjustments** included:
-    We renamed key variables for easier merging and analysis:
+    - We renamed French variable names and INSEE-coded variables to clear, descriptive, and easy-to-understand names. The most important variables for our merges were:
     - `CODGEO`, `code_insee` → `city_id`
     - `LIBGEO`, `nom_commune` → `city_name`
+
     - Merged sector categories into broader labels: technology, consumer, finance_re, etc.
     - Cleaning missing values and standardizing formats (e.g., adding leading zeros to city codes)
     - Deleting duplicates
@@ -293,8 +294,8 @@ elif page == "Demographics":
 
 
     # Retrieve data from session state
-    po = st.session_state['po']
-    lo = st.session_state['lo']
+    #po = st.session_state['po']
+    #lo = st.session_state['lo']
 
  # --- 1. Population Distribution Map (with smaller icon) ---
     st.markdown('<h3><span class="small-emoji">🌍</span> Population Distribution Across French Cities</h3>', unsafe_allow_html=True)
@@ -305,68 +306,71 @@ elif page == "Demographics":
     Lyon, and Toulouse also have substantial populations. Despite the concentration in Paris, France benefits from a robust transportation network centered around the capital.</p>
     """, unsafe_allow_html=True)
 
-    # Data preparation for the map
-    lo_cleaned = lo[
-        (lo['latitude'].notna()) & (lo['longitude'].notna()) &
-        (lo['latitude'] != 0) & (lo['longitude'] != 0)
-    ].copy()
-    lo_cleaned['city_id'] = lo_cleaned['city_id'].astype(str)
+    #Deactivating code with large file and using image instead
+    st.image('pictures/population.png', width=900)
 
-    po_cleaned = po.copy()
-    po_cleaned['city_id'] = po_cleaned['city_id'].astype(str)
+   # Data preparation for the map
+    #lo_cleaned = lo[
+        #(lo['latitude'].notna()) & (lo['longitude'].notna()) &
+        #(lo['latitude'] != 0) & (lo['longitude'] != 0)
+    #].copy()
+    #lo_cleaned['city_id'] = lo_cleaned['city_id'].astype(str)
 
-    merged_df = pd.merge(po_cleaned[['city_id', 'city_name', 'people_no']], lo_cleaned[['city_id', 'latitude', 'longitude']], on='city_id', how='inner')
+    #po_cleaned = po.copy()
+    #po_cleaned['city_id'] = po_cleaned['city_id'].astype(str)
 
-    city_population = merged_df.groupby(['city_name', 'latitude', 'longitude']).agg({'people_no': 'sum'}).reset_index()
-    city_population = city_population.rename(columns={'people_no': 'total_population'})
+    #merged_df = pd.merge(po_cleaned[['city_id', 'city_name', 'people_no']], lo_cleaned[['city_id', 'latitude', 'longitude']], on='city_id', how='inner')
 
-    top_7_cities = city_population.sort_values(by='total_population', ascending=False).head(7)
+    #city_population = merged_df.groupby(['city_name', 'latitude', 'longitude']).agg({'people_no': 'sum'}).reset_index()
+    #city_population = city_population.rename(columns={'people_no': 'total_population'})
 
-    geometry_all = gpd.points_from_xy(city_population['longitude'], city_population['latitude'])
-    all_cities_gdf = gpd.GeoDataFrame(city_population, geometry=geometry_all, crs="EPSG:4326")
+    #top_7_cities = city_population.sort_values(by='total_population', ascending=False).head(7)
 
-    geometry_top_7 = gpd.points_from_xy(top_7_cities['longitude'], top_7_cities['latitude'])
-    top_7_cities_gdf = gpd.GeoDataFrame(top_7_cities, geometry=geometry_top_7, crs="EPSG:4326")
+    #geometry_all = gpd.points_from_xy(city_population['longitude'], city_population['latitude'])
+    #all_cities_gdf = gpd.GeoDataFrame(city_population, geometry=geometry_all, crs="EPSG:4326")
+
+    #geometry_top_7 = gpd.points_from_xy(top_7_cities['longitude'], top_7_cities['latitude'])
+    #top_7_cities_gdf = gpd.GeoDataFrame(top_7_cities, geometry=geometry_top_7, crs="EPSG:4326")
 
 
-    france_map = gpd.read_file("https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_countries.zip")
-    france_map = france_map[france_map['NAME'] == 'France']
+    #france_map = gpd.read_file("https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_countries.zip")
+    #france_map = france_map[france_map['NAME'] == 'France']
 
-    min_lon, max_lon = -6, 10
-    min_lat, max_lat = 41, 52
+    #min_lon, max_lon = -6, 10
+    #min_lat, max_lat = 41, 52
 
     # Plotting
     # *** CHANGE HERE: Reduced figsize for the map ***
-    fig, ax = plt.subplots(1, 1, figsize=(7, 7)) # Was (10, 10)
+    #fig, ax = plt.subplots(1, 1, figsize=(7, 7)) # Was (10, 10)
 
-    france_map.plot(ax=ax, color='lightgrey', edgecolor='black')
-    ax.set_xlim(min_lon, max_lon)
-    ax.set_ylim(min_lat, max_lat)
+    #france_map.plot(ax=ax, color='lightgrey', edgecolor='black')
+    #ax.set_xlim(min_lon, max_lon)
+    #ax.set_ylim(min_lat, max_lat)
 
-    norm = plt.Normalize(all_cities_gdf['total_population'].min(), all_cities_gdf['total_population'].max())
-    sm = plt.cm.ScalarMappable(cmap='viridis', norm=norm)
-    sm.set_array([])
+    #norm = plt.Normalize(all_cities_gdf['total_population'].min(), all_cities_gdf['total_population'].max())
+    #sm = plt.cm.ScalarMappable(cmap='viridis', norm=norm)
+    #sm.set_array([])
 
-    scatter = ax.scatter(all_cities_gdf.geometry.x, all_cities_gdf.geometry.y,
-                       s=all_cities_gdf['total_population'] / 3000,
-                       c=all_cities_gdf['total_population'], cmap='viridis', alpha=0.6)
+    #scatter = ax.scatter(all_cities_gdf.geometry.x, all_cities_gdf.geometry.y,
+                       #s=all_cities_gdf['total_population'] / 3000,
+                       #c=all_cities_gdf['total_population'], cmap='viridis', alpha=0.6)
 
-    for x, y, city in zip(top_7_cities_gdf.geometry.x, top_7_cities_gdf.geometry.y, top_7_cities_gdf['city_name']):
-        ax.text(x, y, city, fontsize=9, ha='left', va='bottom', color='lime')
+    #for x, y, city in zip(top_7_cities_gdf.geometry.x, top_7_cities_gdf.geometry.y, top_7_cities_gdf['city_name']):
+        #ax.text(x, y, city, fontsize=9, ha='left', va='bottom', color='lime')
 
-    cbar = fig.colorbar(sm, ax=ax, orientation='vertical', label='Population Size')
-    cbar.set_label('Population Size', fontsize=10)
-    cbar.ax.tick_params(labelsize=8)
+    #cbar = fig.colorbar(sm, ax=ax, orientation='vertical', label='Population Size')
+    #cbar.set_label('Population Size', fontsize=10)
+    #cbar.ax.tick_params(labelsize=8)
 
-    ax.set_title("Where is Population Distributed Across French Cities?", fontsize=12)
-    ax.set_xlabel("Longitude", fontsize=10)
-    ax.set_ylabel("Latitude", fontsize=10)
-    ax.tick_params(axis='x', labelsize=8)
-    ax.tick_params(axis='y', labelsize=8)
+    #ax.set_title("Where is Population Distributed Across French Cities?", fontsize=12)
+    #ax.set_xlabel("Longitude", fontsize=10)
+    #ax.set_ylabel("Latitude", fontsize=10)
+    #ax.tick_params(axis='x', labelsize=8)
+    #ax.tick_params(axis='y', labelsize=8)
 
-    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+    #plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
 
-    st.pyplot(fig)
+    #st.pyplot(fig)
 
     st.markdown("---")
 
@@ -381,34 +385,37 @@ elif page == "Demographics":
     The population is declining compared to older generations, which indicates a potential future workforce shrinkage. Gender dynamics are stable in younger ages.</p>
     """, unsafe_allow_html=True)
 
+    #Deactivating code with large file and using image instead
+    st.image('pictures/age_sex.png')
+
     # Define the desired order of age groups
-    age_order = [
-        '0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39',
-        '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', # Fixed age_order: removed 70: '70-74', 75: '75-79', 80: '80-84' which were incorrect syntax
-        '75-79', '80-84'
-    ]
+    #age_order = [
+        #'0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39',
+        #'40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', # Fixed age_order: removed 70: '70-74', 75: '75-79', 80: '80-84' which were incorrect syntax
+        #'75-79', '80-84'
+    #]
 
 
     # Group and aggregate data
-    po_agg = po.groupby(['age_group', 'sex'], as_index=False)['people_no'].sum()
+    #po_agg = po.groupby(['age_group', 'sex'], as_index=False)['people_no'].sum()
 
     # Ensure age_group is a categorical variable with the correct order
-    po_agg['age_group'] = pd.Categorical(po_agg['age_group'], categories=age_order, ordered=True)
+    #po_agg['age_group'] = pd.Categorical(po_agg['age_group'], categories=age_order, ordered=True)
 
     # Plotting
     # *** CHANGE HERE: Reduced figsize for the bar chart ***
-    fig, ax = plt.subplots(figsize=(9, 5)) # Was (12, 6)
-    sns.barplot(x='age_group', y='people_no', data=po_agg, hue="sex", palette={"men": "#2ca02c", "women": "#d62728"}, ax=ax)
+    #fig, ax = plt.subplots(figsize=(9, 5)) # Was (12, 6)
+    #sns.barplot(x='age_group', y='people_no', data=po_agg, hue="sex", palette={"men": "#2ca02c", "women": "#d62728"}, ax=ax)
 
-    ax.set_xlabel("Age Group", fontsize=12)
-    ax.set_ylabel("Total Population", fontsize=12)
-    ax.set_title("What is the Population Distribution by Age Group and Sex?", fontsize=14)
-    plt.xticks(rotation=45, fontsize=10)
-    plt.yticks(fontsize=10)
-    ax.legend(fontsize=10)
-    plt.tight_layout()
+    #ax.set_xlabel("Age Group", fontsize=12)
+    #ax.set_ylabel("Total Population", fontsize=12)
+    #ax.set_title("What is the Population Distribution by Age Group and Sex?", fontsize=14)
+    #plt.xticks(rotation=45, fontsize=10)
+    #plt.yticks(fontsize=10)
+    #ax.legend(fontsize=10)
+    #plt.tight_layout()
 
-    st.pyplot(fig)
+    #st.pyplot(fig)
 
     st.markdown("---")
 
@@ -424,24 +431,27 @@ elif page == "Demographics":
     spending on education, healthcare, and social services for families.</p>
     """, unsafe_allow_html=True)
 
+    #Deactivating code with large file and using image instead
+    st.image('pictures/pie_coliving.png')
+
     # Group by cohabitation type and sum people
-    cohab_counts = po.groupby("cohab_mode")["people_no"].sum()
+    #cohab_counts = po.groupby("cohab_mode")["people_no"].sum()
 
     # Convert to percentages
-    cohab_percent = (cohab_counts / cohab_counts.sum()) * 100
+    #cohab_percent = (cohab_counts / cohab_counts.sum()) * 100
 
     # Round and sort descending
-    cohab_percent = cohab_percent.round(2).sort_values(ascending=False)
+    #cohab_percent = cohab_percent.round(2).sort_values(ascending=False)
 
     # Plotting
     # *** CHANGE HERE: Reduced figsize for the pie chart ***
-    fig, ax = plt.subplots(figsize=(6, 6)) # Was (8, 8)
-    ax.pie(cohab_percent, labels=cohab_percent.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 10})
-    ax.set_title("What is the Distribution of Cohabitation Types (%)?", fontsize=14)
-    ax.axis('equal')
-    plt.tight_layout()
+    #fig, ax = plt.subplots(figsize=(6, 6)) # Was (8, 8)
+    #ax.pie(cohab_percent, labels=cohab_percent.index, autopct='%1.1f%%', startangle=140, textprops={'fontsize': 10})
+    #ax.set_title("What is the Distribution of Cohabitation Types (%)?", fontsize=14)
+    #ax.axis('equal')
+    #plt.tight_layout()
 
-    st.pyplot(fig)
+    #st.pyplot(fig)'''
 
     st.markdown('<h3><span class="small-emoji">📊</span> Salary in Different Age Groups</h3>', unsafe_allow_html=True)
 
@@ -509,7 +519,7 @@ if page == "Regional Economic Impact":
 
         st.markdown("### Company Size Distribution by Region")
 
-        busikpi = pd.read_csv("BUSIPKPI.csv").rename(columns={"na_size_co": "other_small_co"})
+        busikpi = pd.read_csv("datasets/BUSIPKPI.csv").rename(columns={"na_size_co": "other_small_co"})
         company_sizes = [
             "other_small_co", "micro_5_co", "micro_9_co", "small_19_co", "small_49_co",
             "mid_99_co", "mid_199_co", "large_499_co", "large_500p_co"
@@ -586,7 +596,7 @@ if page == "Regional Economic Impact":
                 st.plotly_chart(fig_line, use_container_width=True)
 
         # === Salary Analysis ===
-        salaries_df = pd.read_csv("SALARIESKPI.csv")
+        salaries_df = pd.read_csv("datasets/SALARIESKPI.csv")
         age_df = new_po_lo_co_sa_unique.copy()
         scatter_df_source = new_po_lo_co_sa_unique.copy()
 
@@ -1526,7 +1536,7 @@ elif page == "Gender Pay Gap":
         """)
 
 
-        st.image("""dist_exe_tech.png""")
+        st.image("pictures/""dist_exe_tech.png""")
 
         st.markdown("""
         At first glance, cities where the technology sector makes up less than 20% of the economic landscape tend to show the largest positive **executive pay gaps**. Interestingly, nearly all instances where female executives out-earn their male counterparts — the so-called **negative executive pay gaps** — also occur in these low-tech cities. This suggests a possible relationship: a lower presence of the technology sector may be linked to higher female executive salaries, and vice versa.
@@ -1539,9 +1549,9 @@ elif page == "Gender Pay Gap":
         with st.expander("Click to view the full executive pairplot"):
             #We create a pairplot to see the distribution of the pay gaps across the industries
 
-            st.image('pairplot_executives.png')
+            st.image('pictures/pairplot_executives.png')
 
-        st.image("""dist_man_tech.png""")
+        st.image("pictures/""dist_man_tech.png""")
 
 
         st.markdown("""
@@ -1552,7 +1562,7 @@ elif page == "Gender Pay Gap":
         As a next step, we examine whether the share of a sector influences the average pay gap, helping us determine if there is a broader relationship between sector size and pay inequality.""")
         with st.expander("Click to view the full manager pairplot and data preparation"):
             #We create a pairplot to see the distribution of the pay gaps across the industries
-            st.image('pairplot_managers.png')
+            st.image('pictures/pairplot_managers.png')
 
             st.markdown("""**Data preparation:**  
             We created a DataFrame with only the relevant pay gap columns, merged it with the sector composition data, and calculated the sector share for “technology,” “consumer,” “finance_re,” “construction_industry,” and “public_edu_health_social.” We then visualized the relationships using Seaborn’s `pairplot`, first for executive pay gaps, then for **manager pay gaps**.
@@ -1639,7 +1649,7 @@ elif page == "Gender Pay Gap":
         We first examine whether there’s a statistically significant link between **executive** pay gaps and the city-level presence of tech companies, using **Pearson** and **Spearman** correlation tests.
         """)
 
-        st.image("high_tech_high_ex.png")
+        st.image("pictures/high_tech_high_ex.png")
 
         st.markdown("""
         **Results (Executive Pay Gap vs. Tech Share):**  
@@ -1660,7 +1670,7 @@ elif page == "Gender Pay Gap":
         Next, we analyze **manager** pay gaps in relation to tech-sector concentration.
         """)
 
-        st.image("high_tech_high_man.png")
+        st.image("pictures/high_tech_high_man.png")
 
         st.markdown("""
         **Results (Manager Pay Gap vs. Tech Share):**  
@@ -1693,9 +1703,9 @@ elif page == "Gender Pay Gap":
         By keeping the population range comparable, we aim for meaningful sectoral comparisons across the two groups.
         """)
 
-        st.image("negative_heatmap.png")
+        st.image("pictures/negative_heatmap.png")
 
-        st.image("high_heatmap.png")
+        st.image("pictures/high_heatmap.png")
 
         st.markdown("""
         In both groups, the consumer sector shows a strong correlation with the total number of companies, suggesting that small cities may lean toward local retail-based economies.
@@ -1859,7 +1869,7 @@ if page == "Further Investigation Areas":
         st.markdown("""
         [Eurostat data](https://ec.europa.eu/eurostat/web/products-eurostat-news/w/edn-20250211-1) shows regional differences in the share of female scientists and engineers across the EU. It would be valuable to examine whether regions with more women in STEM have narrower pay gaps or higher wages overall. We could not explore this further, but it remains a relevant angle, especially in light of the upcoming [EU Pay Transparency Action](https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/gender-equality/equal-pay/eu-action-equal-pay_en) (June 2026).
         """)
-        st.image('female_engineers.png')
+        st.image('pictures/female_engineers.png')
 
     with st.expander("🏦 Financial Sector Effects"):
         st.markdown("""
@@ -1883,9 +1893,7 @@ if page == "Conclusion":
 
     Still, structural challenges persist. Many women adjust their careers due to caregiving responsibilities, which affects long-term earnings and financial security. Public investment in childcare and better support for care-sector professions remain critical.
 
-    Looking ahead, policies like the EU Pay Transparency Directive and increased access to training in high-growth sectors can help shift the balance. Long-term progress depends not only on gender, but also on addressing regional, sector-based, and life-stage inequalities in how opportunity is distributed.
+    Looking ahead, policies like the [EU Pay Transparency Directive](https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/gender-equality/equal-pay/eu-action-equal-pay_en) and increased access to training in high-growth sectors can help shift the balance. Long-term progress depends not only on gender, but also on addressing regional, sector-based, and life-stage inequalities in how opportunity is distributed.
     """)
 
-    st.markdown("## ❓ Any Questions?")
-    st.image("any_questions.gif", width=250)
 
