@@ -173,7 +173,7 @@ pages = ["Introduction & Objectives", "Datasets & Cleaning", "Demographics", "Re
          "Further Investigation Areas", "Conclusion" ]
 page = st.sidebar.radio("Go to", pages)
 st.sidebar.write("### 🇫🇷 Project Members")
-st.sidebar.write("""- Angelika Tabak\n- Mir Geiassudin Seifie\n- Natalia Syrychenko\n- Daneyssa Aguilera Medina\n\n Mentor: Christophe Feith
+st.sidebar.write("""- Angelika Tabak\n- Mir Geiassudin Seifie\n- Natalia Syrychenko\n- Daneyssa Aguilera Medina
                 """)
 
 if page == "Introduction & Objectives":
