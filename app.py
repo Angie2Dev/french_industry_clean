@@ -191,7 +191,7 @@ if page == "Introduction & Objectives":
     already in their twenties. This is not only a matter of fairness, but also one of economic urgency: societies and their pension systems will increasingly depend on fully integrating women’s potential into 
     the labor market.     
 
-    The technology sector 👩🏿‍💻:male-technologist: deserves special focus in this context, as 
+    The technology sector 👩🏿‍💻 deserves special focus in this context, as 
     [75% of new jobs between now and 2050 are expected to emerge in science and tech fields](https://lafrenchtech.gouv.fr/en/the-ecosystems-commitments/parity-pact/).                    
     
                 
