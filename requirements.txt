@@ -1,9 +1,9 @@
-streamlit
-pandas
-numpy
+streamlit>=1.35
+pandas>=2.0,<3.0
+numpy>=1.26,<2.0
 matplotlib
 plotly
 seaborn
-scipy
-statsmodels
+scipy==1.11.4
+statsmodels==0.14.0
 
