@@ -184,10 +184,10 @@ if page == "Introduction & Objectives":
     long-term challenges for pension systems. In this context, it is increasingly important to analyze both structural and socio-economic 
     inequalities at the national level - particularly in countries like France, which stands as the second-largest contributor to the European 
     Union’s Gross Domestic Product [(GDP)](https://european-union.europa.eu/principles-countries-history/facts-and-figures-european-union_en). 
-    In 2022, the **Île-de-France region** was the [single largest regional contributor to GDP in the EU](https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Economy_at_regional_level) :chart:, 
+    In 2022, the **Île-de-France region** was the [single largest regional contributor to GDP in the EU](https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Economy_at_regional_level), 
     significantly outpacing other regions across the Union.
     
-    Economic growth and social prosperity can only be sustained if we ensure **equal pay** :scales: and equal opportunities for women in the workplace, especially given that women begin to outnumber men in France 
+    Economic growth and social prosperity can only be sustained if we ensure **equal pay** and equal opportunities for women in the workplace, especially given that women begin to outnumber men in France 
     already in their twenties. This is not only a matter of fairness, but also one of economic urgency: societies and their pension systems will increasingly depend on fully integrating women’s potential into 
     the labor market.     
 
@@ -195,7 +195,7 @@ if page == "Introduction & Objectives":
     [75% of new jobs between now and 2050 are expected to emerge in science and tech fields](https://lafrenchtech.gouv.fr/en/the-ecosystems-commitments/parity-pact/).                    
     
                 
-    :dart: Whether you're a data professional, a student in economics or STEM (Science, Technology, Engineering, and Mathematics), or simply curious about structural and socioeconomic trends — this study offers data-driven insights into pressing questions of equality and opportunity.
+    :dart: Whether you're a data professional, a student in economics or STEM (Science, Technology, Engineering, and Mathematics), or simply curious about structural and socioeconomic trends, this study offers data-driven insights into pressing questions of equality and opportunity.
     And especially if you're an executive, manager, or HR professional in a position to shape organizational culture, we hope this work sparks ideas, reflection, and action.
 
                 
@@ -205,14 +205,14 @@ if page == "Introduction & Objectives":
     """)
     st.image("pictures/FrenchMotto.png")
     st.markdown("""
-    After a quick overview of our data setup, and cleaning steps, we dive into the visual and statistical chapters—the ones illustrated in the graphic above.
+    After a quick overview of our data setup, and cleaning steps, we dive into the visual and statistical chapters, the ones illustrated in the graphic above.
 
     If you're short on time, feel free to jump directly to the sections using the sidebar on the left :arrow_left:.
 
     """)
     st.header("About Our Team :busts_in_silhouette::busts_in_silhouette:")
     st.markdown("""
-    Three of our four team members hold degrees in Business Administration, allowing us to frame our findings within broader economic theories such as economies of scale, contract theory, and market competition—especially in the Regional Economic Impact chapter.
+    Three of our four team members hold degrees in Business Administration, allowing us to frame our findings within broader economic theories such as economies of scale, contract theory, and market competition, especially in the Regional Economic Impact chapter.
     The Gender Pay Gap section is further enriched by the firsthand expertise of an independent HR and recruitment consultant with over a decade of experience across Europe, bringing practical insights into structural inequality and workplace dynamics.
     Real-life examples - from unconscious bias to evolving hiring practices - helped us translate abstract statistics into concrete human realities, while also highlighting positive trends in inclusion and equity, particularly in tech and STEM.
 
