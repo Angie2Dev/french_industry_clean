@@ -4,6 +4,6 @@ numpy
 matplotlib
 plotly
 seaborn
-scipy
-statsmodels
+scipy==1.11.4
+statsmodels==0.14.0
 
